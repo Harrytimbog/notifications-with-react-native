@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "notifications-with-react-native",
+    "slug": "notifications-with-react-native",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
