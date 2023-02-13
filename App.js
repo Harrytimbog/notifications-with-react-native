@@ -1,21 +1,58 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { StyleSheet, Button, View } from "react-native";
 import * as Notifications from "expo-notifications";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+      shouldShowAlert: true,
+    };
+  },
+});
+
+//// START: NEWLY ADDED FUNCTIONS ////
+const allowsNotificationsAsync = async () => {
+  const settings = await Notifications.getPermissionsAsync();
+  return (
+    settings.granted ||
+    settings.ios?.status === Notifications.IosAuthorizationStatus.PROVISIONAL
+  );
+};
+
+const requestPermissionsAsync = async () => {
+  return await Notifications.requestPermissionsAsync({
+    ios: {
+      allowAlert: true,
+      allowBadge: true,
+      allowSound: true,
+      allowAnnouncements: true,
+    },
+  });
+};
+
 export default function App() {
-  function scheduleNotificationHandler() {
+  const scheduleNotificationHandler = async () => {
+    //// START: CALL FUNCTIONS HERE ////
+    const hasPushNotificationPermissionGranted =
+      await allowsNotificationsAsync();
+
+    if (!hasPushNotificationPermissionGranted) {
+      await requestPermissionsAsync();
+    }
+
     Notifications.scheduleNotificationAsync({
       content: {
-        title: "My first local Notification",
-        body: "This is the body of the notification.",
-        data: { userName: "HArrytimbog" },
+        title: "Congratulations Timi",
+        body: "Your Visa has been approved",
+        data: { userName: "Harrytimbog" },
       },
       trigger: {
-        seconds: 5,
+        seconds: 2,
       },
     });
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -23,6 +60,7 @@ export default function App() {
         title="Schedule Notification"
         onPress={scheduleNotificationHandler}
       />
+
       <StatusBar style="auto" />
     </View>
   );
