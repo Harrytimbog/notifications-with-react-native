@@ -35,7 +35,7 @@ const requestPermissionsAsync = async () => {
 
 export default function App() {
   useEffect(() => {
-    const subscriptions = Notifications.addNotificationReceivedListener(
+    const subscription1 = Notifications.addNotificationReceivedListener(
       (notification) => {
         console.log("NOTIFICATION RECEIVED!");
         const userName = notification.request.content.data.userName;
@@ -43,8 +43,18 @@ export default function App() {
       }
     );
 
+    const subscription2 = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log("NOTIFICATION RESPONSEE RECEIVED!");
+        // console.log(response);
+        const userName = response.notification.request.content.data.userName;
+        console.log(userName);
+      }
+    );
+
     return () => {
-      subscriptions.remove();
+      subscription1.remove();
+      subscription2.remove();
     };
   }, []);
 
