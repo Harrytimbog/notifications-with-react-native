@@ -5,6 +5,23 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/icon.png",
+          "color": "#ffffff"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "676971fb-1c76-43de-b325-a09e9cb17f74"
+      }
+    }
+  },
+  "android": {
+    "googleServicesFile": "./google-services.json"
   }
 }
