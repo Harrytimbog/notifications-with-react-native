@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Button, View, Alert, Platform } from "react-native";
 import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
+import { Exponent_Push_Token } from "@env";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -83,11 +84,30 @@ export default function App() {
     });
   };
 
+  const sendPushNotificationHandler = () => {
+    fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: Exponent_Push_Token,
+        title: "Congratulations Timi",
+        body: "Your have been offered the role of full stack developer",
+      }),
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Button
         title="Schedule Notification"
         onPress={scheduleNotificationHandler}
+      />
+
+      <Button
+        title="Send Push Notification"
+        onPress={sendPushNotificationHandler}
       />
 
       <StatusBar style="auto" />
